@@ -1,10 +1,16 @@
 # costm_software
 
-A new Flutter project.
-
 Clone o projeto:
 
-    git clone
+    git clone https://github.com/costm-software/costm-software.git
+
+Entre no diretório do projeto:
+
+    cd costm-software
+
+Instale as dependências:
+
+    flutter pub get
 
 Inicialize o git flow
 
