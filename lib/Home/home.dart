@@ -1,21 +1,30 @@
-
-import 'package:costm/Widgets/bottom_nav_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:costm_software/Tournament/add_tournament.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
-  class _HomePageState extends State<HomePage>{
-    @override
-    Widget build(BuildContext context) => Scaffold(
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Tournaments'),
         centerTitle: true,
       ),
-      bottomNavigationBar: BottomNavigationBarapp(indexNum: 0)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => const AddTournamentPage())));
+        },
+        child: const Icon(Icons.add),
+      ),
     );
+  }
 }
