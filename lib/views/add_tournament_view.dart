@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:costm_software/Player/add_player.dart';
+import 'package:costm_software/views/add_player_view.dart';
 
 class AddTournamentPage extends StatefulWidget {
   const AddTournamentPage({Key? key}) : super(key: key);
 
   @override
-  _AddTournamentPageState createState() => _AddTournamentPageState();
+  State<AddTournamentPage> createState() => _AddTournamentPageState();
 }
 
 class _AddTournamentPageState extends State<AddTournamentPage> {

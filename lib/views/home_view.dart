@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:costm_software/Tournament/add_tournament.dart';
+import 'package:costm_software/views/add_tournament_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

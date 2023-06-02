@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Home/home.dart';
-import 'Player/add_player.dart';
-import 'Tournament/add_tournament.dart';
-import 'Player/player_detail.dart';
-import 'Tournament/tournament_detail.dart';
+import 'views/home_view.dart';
+import 'views/add_player_view.dart';
+import 'views/add_tournament_view.dart';
+import 'views/player_detail_view.dart';
+import 'views/tournament_detail_view.dart';
 
 void main() {
   runApp(const MyApp());

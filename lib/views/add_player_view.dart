@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:costm_software/services/storage_service.dart';
 
 class AddPlayerPage extends StatefulWidget {
   const AddPlayerPage({Key? key}) : super(key: key);
 
   @override
-  _AddPlayerPageState createState() => _AddPlayerPageState();
+  State<AddPlayerPage> createState() => _AddPlayerPageState();
 }
 
 class _AddPlayerPageState extends State<AddPlayerPage> {
-  final TextEditingController textController = TextEditingController();
+  final TextEditingController _playerNameController = TextEditingController();
+  final TextEditingController _playerAgeController = TextEditingController();
+  final SecureStorage _secureStorage = SecureStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSecureStorageData();
+  }
+
+  Future<void> fetchSecureStorageData() async {
+    _playerNameController.text = await _secureStorage.getPlayerName() ?? '';
+    _playerAgeController.text = await _secureStorage.getPlayerAge() ?? '';
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -23,7 +37,7 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: textController,
+              controller: _playerNameController,
               maxLines: 1,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -34,7 +48,7 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: textController,
+              controller: _playerAgeController,
               maxLines: 1,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
@@ -45,8 +59,9 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
           ),
           ElevatedButton(
             child: const Text('SAVE PLAYER'),
-            onPressed: () {
-              print("Player saved");
+            onPressed: () async {
+              await _secureStorage.setPlayerName(_playerNameController.text);
+              await _secureStorage.setPlayerAge(_playerAgeController.text);
             },
           )
         ]),
