@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
         "/add_player": (BuildContext context) => const AddPlayerPage(),
         "/tournament_detail": (BuildContext context) =>
             const TournamentDetailPage(),
-        "/player_deatil": (BuildContext context) => const PlayerDetailPage(),
+        "/player_detail": (BuildContext context) => const PlayerDetailPage(),
       },
       initialRoute: "/home",
       title: 'Flutter Navigation',
