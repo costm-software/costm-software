@@ -19,3 +19,7 @@ Inicialize o git flow
 Exemplo de inicialização de feature:
 
     git flow feature start NOME_DA_FEATUREUP
+
+Git push:
+
+    git push
