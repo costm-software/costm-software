@@ -16,6 +16,6 @@ Inicialize o git flow
 
     git flow init
 
-Criando uma feature
-    
-    git flow feature start NOMEDAFEATURE
+Exemplo de inicialização de feature:
+
+    git flow feature start NOME_DA_FEATUREUP
