@@ -16,3 +16,6 @@ Inicialize o git flow
 
     git flow init
 
+Criando uma feature
+    
+    git flow feature start NOMEDAFEATURE
