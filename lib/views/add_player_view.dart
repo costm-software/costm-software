@@ -13,6 +13,8 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
   final TextEditingController _playerAgeController = TextEditingController();
   final SecureStorage _secureStorage = SecureStorage();
 
+  bool isDialogOpen = false;
+
   @override
   void initState() {
     super.initState();
@@ -22,6 +24,36 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
   Future<void> fetchSecureStorageData() async {
     _playerNameController.text = await _secureStorage.getPlayerName() ?? '';
     _playerAgeController.text = await _secureStorage.getPlayerAge() ?? '';
+  }
+
+  Future<void> _showConfirmationDialog() async {
+    setState(() {
+      isDialogOpen = true;
+    });
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmation'),
+          content: const Text('Player saved successfully.'),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('OK'),
+              onPressed: () {
+                _playerNameController.clear();
+                _playerAgeController.clear();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    setState(() {
+      isDialogOpen = false;
+    });
   }
 
   @override
@@ -60,6 +92,7 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
           ElevatedButton(
             child: const Text('SAVE PLAYER'),
             onPressed: () async {
+              _showConfirmationDialog();
               await _secureStorage.setPlayerName(_playerNameController.text);
               await _secureStorage.setPlayerAge(_playerAgeController.text);
             },
