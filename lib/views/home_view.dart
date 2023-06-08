@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Tournaments'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
