@@ -35,14 +35,24 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
       roundsNumber: int.tryParse(roundsController.text),
     );
 
+    // Retrieve existing tournament list from secure storage
+    final String? tournamentListJson =
+        await secureStorage.read(key: 'tournamentList');
+    if (tournamentListJson != null) {
+      final List<dynamic> tournamentListData = jsonDecode(tournamentListJson);
+      tournamentList =
+          tournamentListData.map((t) => Tournament.fromJson(t)).toList();
+    }
+
+    // Add new tournament to the list
     tournamentList.add(tournament);
 
-    final List<Map<String, dynamic>> tournamentListJson =
+    // Write updated tournament list back to secure storage
+    final List<Map<String, dynamic>> tournamentListJsonData =
         tournamentList.map((t) => t.toJson()).toList();
-
     await secureStorage.write(
       key: 'tournamentList',
-      value: jsonEncode(tournamentListJson),
+      value: jsonEncode(tournamentListJsonData),
     );
 
     nameController.clear();
@@ -63,7 +73,6 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.pop(context, tournamentList);
             },
             child: const Text('OK'),
           ),

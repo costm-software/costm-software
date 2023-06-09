@@ -16,8 +16,8 @@ class _HomePageState extends State<HomePage> {
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     loadTournamentList();
   }
 
@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
         tournamentList = updatedTournamentList;
       });
     }
+    loadTournamentList();
   }
 
   @override
