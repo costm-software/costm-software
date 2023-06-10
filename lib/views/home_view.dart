@@ -1,3 +1,4 @@
+import 'package:costm_software/views/tournament_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:costm_software/views/add_tournament_view.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -61,22 +62,29 @@ class _HomePageState extends State<HomePage> {
         },
         child: const Icon(Icons.add),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: tournamentList.length,
-              itemBuilder: (context, index) {
-                final tournament = tournamentList[index];
-                return ListTile(
-                  title: Text(tournament.name ?? ''),
-                  subtitle: Text(tournament.organizer ?? ''),
-                );
-              },
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: tournamentList.length,
+            itemBuilder: (context, index) {
+              final tournament = tournamentList[index];
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TournamentDetailPage(
+                                  tournament: tournament,
+                                )));
+                  },
+                  child: ListTile(
+                    title: Text(tournament.name ?? ''),
+                    subtitle: Text(tournament.organizer ?? ''),
+                  ));
+            },
+          ),
+        ],
       ),
     );
   }

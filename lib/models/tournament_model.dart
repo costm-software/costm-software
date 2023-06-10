@@ -7,7 +7,7 @@ class Tournament {
   String? timeControl;
   int? roundsNumber;
   List<Rounds>? rounds;
-  List<PlayerOne>? players;
+  List<Player>? players;
 
   Tournament(
       {String? tournamentId,
@@ -32,9 +32,9 @@ class Tournament {
       });
     }
     if (json['players'] != null) {
-      players = <PlayerOne>[];
+      players = <Player>[];
       json['players'].forEach((v) {
-        players!.add(PlayerOne.fromJson(v));
+        players!.add(Player.fromJson(v));
       });
     }
   }
@@ -53,6 +53,15 @@ class Tournament {
       data['players'] = players!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  void addPlayer(Player player) {
+    players ??= <Player>[];
+    players!.add(player);
+  }
+
+  void removePlayer(Player player) {
+    players?.remove(player);
   }
 }
 
@@ -85,8 +94,8 @@ class Rounds {
 class Matches {
   String? matchId;
   String? matchResult;
-  PlayerOne? playerOne;
-  PlayerOne? playerTwo;
+  Player? playerOne;
+  Player? playerTwo;
 
   Matches({matchId, matchResult, playerOne, playerTwo});
 
@@ -94,10 +103,10 @@ class Matches {
     matchId = json['match_id'];
     matchResult = json['match_result'];
     playerOne = json['player_one'] != null
-        ? new PlayerOne.fromJson(json['player_one'])
+        ? new Player.fromJson(json['player_one'])
         : null;
     playerTwo = json['player_two'] != null
-        ? new PlayerOne.fromJson(json['player_two'])
+        ? new Player.fromJson(json['player_two'])
         : null;
   }
 
@@ -115,14 +124,14 @@ class Matches {
   }
 }
 
-class PlayerOne {
+class Player {
   String? playerId;
   String? name;
   int? age;
 
-  PlayerOne({playerId, name, age});
+  Player({String? playerId, this.name, this.age}): playerId = playerId ?? const Uuid().v4();
 
-  PlayerOne.fromJson(Map<String, dynamic> json) {
+  Player.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
     name = json['name'];
     age = json['age'];

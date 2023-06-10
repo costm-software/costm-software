@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:costm_software/views/add_player_view.dart';
 import 'package:costm_software/models/tournament_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
@@ -164,29 +163,6 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
                   labelText: 'Number of rounds',
                 ),
               ),
-            ),
-            const Divider(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Player's list:",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                ElevatedButton.icon(
-                  label: const Text('Add player'),
-                  icon: const Icon(Icons.group_add),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => const AddPlayerPage())));
-                  },
-                )
-              ],
             ),
           ],
         ),
