@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:costm_software/models/tournament_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
+import 'dart:io';
 
 class AddTournamentPage extends StatefulWidget {
   const AddTournamentPage({Key? key}) : super(key: key);
@@ -42,6 +43,10 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
       tournamentList =
           tournamentListData.map((t) => Tournament.fromJson(t)).toList();
     }
+
+    // Write the tournamentListJson to a .json file
+    File jsonFile = File('tournamentList.json');
+    await jsonFile.writeAsString(tournamentListJson ?? '');
 
     // Add new tournament to the list
     tournamentList.add(tournament);

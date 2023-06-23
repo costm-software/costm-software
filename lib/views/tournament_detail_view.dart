@@ -20,49 +20,194 @@ class _TournamentDetailPageState extends State<TournamentDetailPage> {
           title: Text(widget.tournament.name ?? ''),
           centerTitle: true,
         ),
-        body: Column(children: [
-          Text(widget.tournament.tournamentId ?? ''),
-          Text(widget.tournament.organizer ?? ''),
-          Text(widget.tournament.timeControl ?? ''),
-          Text(widget.tournament.roundsNumber.toString()),
-          const Text("Players: "),
-          Text(widget.tournament.players?.length.toString() ?? '0'),
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.tournament.players?.length ?? 0,
-              itemBuilder: (context, index) {
-                final player = widget.tournament.players![index];
-                return GestureDetector(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "ID: ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: widget.tournament.tournamentId.toString(),
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Organizer: ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: widget.tournament.organizer.toString(),
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Time Control: ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: widget.tournament.timeControl.toString(),
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Number of Rounds: ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: widget.tournament.roundsNumber.toString(),
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Number of Players: ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: widget.tournament.players?.length.toString() ?? '0',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.tournament.players?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final player = widget.tournament.players![index];
+                  return GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PlayerDetailPage(
-                                    player: player,
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlayerDetailPage(
+                            player: player,
+                          ),
+                        ),
+                      );
                     },
                     child: ListTile(
-                      title: Text(player.name ?? ''),
-                      subtitle: Text('Age: ${player.age ?? ''}'),
-                    ));
-              },
+                      hoverColor: const Color.fromRGBO(200, 213, 26, 1),
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(16.0, 2.0, 10.0, 2.0),
+                      title: Text(
+                        player.name ?? '',
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Age: ${player.age ?? ''}',
+                        style: const TextStyle(
+                          fontSize: 10.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          ElevatedButton.icon(
-            label: const Text('Add player'),
-            icon: const Icon(Icons.group_add),
-            onPressed: () async {
-              final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) =>
-                          AddPlayerPage(tournament: widget.tournament))));
-              if (result == true) {
-                setState(
-                    () {}); // Atualiza o estado para reconstruir a interface
-              }
-            },
-          )
-        ]),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton.icon(
+                label: const Text('Add player'),
+                icon: const Icon(Icons.group_add),
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddPlayerPage(
+                        tournament: widget.tournament,
+                      ),
+                    ),
+                  );
+                  if (result == true) {
+                    setState(() {});
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       );
 }
