@@ -18,6 +18,36 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
   final TextEditingController roundsController = TextEditingController();
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
+  final List<String> timeControlList = <String>[
+    '3 min',
+    '3 min | 2 sec',
+    '5 min',
+    '5 min | 5 sec',
+    '10 min',
+    '15 min | 10 sec',
+    '20 min',
+    '21 min',
+    '30 min',
+    '60 min'
+  ];
+
+  String dropdownValue = '3 min';
+
+  @override
+  void initState() {
+    super.initState();
+    dropdownValue = timeControlList[0];
+  }
+
+  void onTimeControlChanged(String? newValue) {
+    if (timeControlList.contains(newValue)) {
+      setState(() {
+        dropdownValue = newValue ?? '';
+        timeControlController.text = dropdownValue;
+      });
+    }
+  }
+
   List<Tournament> tournamentList = [];
 
   Future<bool> saveTournament() async {
@@ -144,6 +174,19 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
                   border: OutlineInputBorder(),
                   labelText: 'Organizer',
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton(
+                value: dropdownValue,
+                items: timeControlList.map((String value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: onTimeControlChanged,
               ),
             ),
             Padding(
