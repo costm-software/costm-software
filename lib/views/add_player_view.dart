@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:costm_software/services/storage_service.dart';
 import 'package:costm_software/models/tournament_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
 
 class AddPlayerPage extends StatefulWidget {
   final Tournament tournament;
@@ -14,6 +16,9 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
   final TextEditingController _playerNameController = TextEditingController();
   final TextEditingController _playerAgeController = TextEditingController();
   final SecureStorage _secureStorage = SecureStorage();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+
+  List<Tournament> tournamentList = [];
 
   bool isDialogOpen = false;
 
@@ -52,12 +57,46 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
       return false;
     }
 
+    final String? tournamentListJson =
+        await secureStorage.read(key: 'tournamentList');
+
     final Player newPlayer = Player(
       name: _playerNameController.text,
       age: int.tryParse(_playerAgeController.text),
     );
 
     widget.tournament.addPlayer(newPlayer);
+
+    // print(widget.tournament.toJson().toString());r
+
+    if (tournamentListJson != null) {
+      final List<dynamic> tournamentListData = jsonDecode(tournamentListJson);
+      for (dynamic item in tournamentListData) {
+        Tournament tournament = Tournament.fromJson(item);
+        print(tournament.toJson().toString());
+      }
+    }
+
+    if (tournamentListJson != null) {
+      final List<dynamic> tournamentListData = jsonDecode(tournamentListJson);
+      tournamentList =
+          tournamentListData.map((t) => Tournament.fromJson(t)).toList();
+
+      int index = tournamentList
+          .indexWhere((t) => t.tournamentId == widget.tournament.tournamentId);
+      if (index != -1) {
+        tournamentList[index] = widget.tournament;
+
+        List<dynamic> updatedTournamentListData =
+            tournamentList.map((t) => t.toJson()).toList();
+        String updatedTournamentListJson =
+            jsonEncode(updatedTournamentListData);
+        await secureStorage.write(
+            key: 'tournamentList', value: updatedTournamentListJson);
+      } else {
+        print('Tournament not found');
+      }
+    }
 
     _playerNameController.clear();
     _playerAgeController.clear();

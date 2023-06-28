@@ -8,16 +8,20 @@ class Tournament {
   int? roundsNumber;
   List<Rounds>? rounds;
   List<Player>? players;
+  int? currentRound;
+  String? status;
 
-  Tournament(
-      {String? tournamentId,
-      this.name,
-      this.organizer,
-      this.timeControl,
-      this.roundsNumber,
-      this.rounds,
-      this.players})
-      : tournamentId = tournamentId ?? const Uuid().v4();
+  Tournament({
+    String? tournamentId,
+    this.name,
+    this.organizer,
+    this.timeControl,
+    this.roundsNumber,
+    this.rounds,
+    this.players,
+    this.currentRound,
+    this.status,
+  }) : tournamentId = tournamentId ?? const Uuid().v4();
 
   Tournament.fromJson(Map<String, dynamic> json) {
     tournamentId = json['tournament_id'];
@@ -25,6 +29,9 @@ class Tournament {
     organizer = json['organizer'];
     timeControl = json['time_control'];
     roundsNumber = json['rounds_number'];
+    currentRound = json['currentRound'];
+    status = json['status'];
+
     if (json['rounds'] != null) {
       rounds = <Rounds>[];
       json['rounds'].forEach((v) {
@@ -129,7 +136,8 @@ class Player {
   String? name;
   int? age;
 
-  Player({String? playerId, this.name, this.age}): playerId = playerId ?? const Uuid().v4();
+  Player({String? playerId, this.name, this.age})
+      : playerId = playerId ?? const Uuid().v4();
 
   Player.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
