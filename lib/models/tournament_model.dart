@@ -1,5 +1,8 @@
 import 'package:uuid/uuid.dart';
 
+import 'package:costm_software/models/player_model.dart';
+import 'package:costm_software/models/rounds_model.dart';
+
 class Tournament {
   String? tournamentId;
   String? name;
@@ -47,12 +50,13 @@ class Tournament {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['tournament_id'] = tournamentId;
-    data['name'] = name;
-    data['organizer'] = organizer;
-    data['time_control'] = timeControl;
-    data['rounds_number'] = roundsNumber;
+    final Map<String, dynamic> data = {
+      'tournament_id': tournamentId,
+      'name': name,
+      'organizer': organizer,
+      'time_control': timeControl,
+      'rounds_number': roundsNumber,
+    };
     if (rounds != null) {
       data['rounds'] = rounds!.map((v) => v.toJson()).toList();
     }
@@ -69,87 +73,5 @@ class Tournament {
 
   void removePlayer(Player player) {
     players?.remove(player);
-  }
-}
-
-class Rounds {
-  String? roundId;
-  List<Matches>? matches;
-
-  Rounds({roundId, matches});
-
-  Rounds.fromJson(Map<String, dynamic> json) {
-    roundId = json['round_id'];
-    if (json['matches'] != null) {
-      matches = <Matches>[];
-      json['matches'].forEach((v) {
-        matches!.add(new Matches.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['round_id'] = roundId;
-    if (matches != null) {
-      data['matches'] = matches!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Matches {
-  String? matchId;
-  String? matchResult;
-  Player? playerOne;
-  Player? playerTwo;
-
-  Matches({matchId, matchResult, playerOne, playerTwo});
-
-  Matches.fromJson(Map<String, dynamic> json) {
-    matchId = json['match_id'];
-    matchResult = json['match_result'];
-    playerOne = json['player_one'] != null
-        ? new Player.fromJson(json['player_one'])
-        : null;
-    playerTwo = json['player_two'] != null
-        ? new Player.fromJson(json['player_two'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['match_id'] = matchId;
-    data['match_result'] = matchResult;
-    if (playerOne != null) {
-      data['player_one'] = playerOne!.toJson();
-    }
-    if (playerTwo != null) {
-      data['player_two'] = playerTwo!.toJson();
-    }
-    return data;
-  }
-}
-
-class Player {
-  String? playerId;
-  String? name;
-  int? age;
-
-  Player({String? playerId, this.name, this.age})
-      : playerId = playerId ?? const Uuid().v4();
-
-  Player.fromJson(Map<String, dynamic> json) {
-    playerId = json['player_id'];
-    name = json['name'];
-    age = json['age'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['player_id'] = playerId;
-    data['name'] = name;
-    data['age'] = age;
-    return data;
   }
 }

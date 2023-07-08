@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:costm_software/services/storage_service.dart';
 import 'package:costm_software/models/tournament_model.dart';
+import 'package:costm_software/models/player_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class AddPlayerPage extends StatefulWidget {
   final Tournament tournament;
@@ -16,7 +18,7 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
   final TextEditingController _playerNameController = TextEditingController();
   final TextEditingController _playerAgeController = TextEditingController();
   final SecureStorage _secureStorage = SecureStorage();
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   List<Tournament> tournamentList = [];
 
@@ -94,7 +96,7 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
         await secureStorage.write(
             key: 'tournamentList', value: updatedTournamentListJson);
       } else {
-        print('Tournament not found');
+        //print('Tournament not found');
       }
     }
 
@@ -160,6 +162,9 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
               controller: _playerAgeController,
               maxLines: 1,
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+              ],
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Age',

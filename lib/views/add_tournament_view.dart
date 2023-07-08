@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:costm_software/models/tournament_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/services.dart';
 
 class AddTournamentPage extends StatefulWidget {
   const AddTournamentPage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
   final TextEditingController roundsController = TextEditingController();
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  final List<String> timeControlList = <String>[
+  final List<String> timeControlList = const [
     '3 min',
     '3 min | 2 sec',
     '5 min',
@@ -42,7 +42,7 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
   void onTimeControlChanged(String? newValue) {
     if (timeControlList.contains(newValue)) {
       setState(() {
-        dropdownValue = newValue ?? '';
+        dropdownValue = newValue!;
         timeControlController.text = dropdownValue;
       });
     }
@@ -74,19 +74,13 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
           tournamentListData.map((t) => Tournament.fromJson(t)).toList();
     }
 
-    // Write the tournamentListJson to a .json file
-    File jsonFile = File('tournamentList.json');
-    await jsonFile.writeAsString(tournamentListJson ?? '');
-
     // Add new tournament to the list
     tournamentList.add(tournament);
 
     // Write updated tournament list back to secure storage
-    final List<Map<String, dynamic>> tournamentListJsonData =
-        tournamentList.map((t) => t.toJson()).toList();
     await secureStorage.write(
       key: 'tournamentList',
-      value: jsonEncode(tournamentListJsonData),
+      value: jsonEncode(tournamentList.map((t) => t.toJson()).toList()),
     );
 
     nameController.clear();
@@ -157,6 +151,7 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                key: const ValueKey('nameField'),
                 controller: nameController,
                 maxLines: 1,
                 decoration: const InputDecoration(
@@ -176,36 +171,69 @@ class _AddTournamentPageState extends State<AddTournamentPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton(
-                value: dropdownValue,
-                items: timeControlList.map((String value) {
-                  return DropdownMenuItem(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: onTimeControlChanged,
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(height: 8),
+              const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    'Select a time control option:',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
+              const SizedBox(
+                height: 8,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: timeControlController,
-                maxLines: 1,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Time control',
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.blue,
+                      width: 2,
+                    ),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      hint: const Text('Select an option'),
+                      value: dropdownValue,
+                      isExpanded: true,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.blue,
+                      ),
+                      onChanged: onTimeControlChanged,
+                      items: timeControlList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ]),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: roundsController,
                 maxLines: 1,
                 keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                ],
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Number of rounds',
