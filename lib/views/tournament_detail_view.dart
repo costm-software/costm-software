@@ -1,3 +1,4 @@
+import 'package:costm_software/views/edit_tournament_view.dart';
 import 'package:flutter/material.dart';
 import 'package:costm_software/models/tournament_model.dart';
 import 'package:costm_software/views/add_player_view.dart';
@@ -284,6 +285,26 @@ class _TournamentDetailPageState extends State<TournamentDetailPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => AddPlayerPage(
+                        tournament: widget.tournament,
+                      ),
+                    ),
+                  );
+                  if (result == true) {
+                    setState(() {});
+                  }
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton.icon(
+                label: const Text('Edit this'),
+                icon: const Icon(Icons.edit),
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditTournamentPage(
                         tournament: widget.tournament,
                       ),
                     ),
