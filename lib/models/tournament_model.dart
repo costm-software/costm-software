@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 import 'package:costm_software/models/player_model.dart';
-import 'package:costm_software/models/rounds_model.dart';
+import 'package:costm_software/models/round_model.dart';
 
 class Tournament {
   String? tournamentId;
@@ -9,7 +9,7 @@ class Tournament {
   String? organizer;
   String? timeControl;
   int? roundsNumber;
-  List<Rounds>? rounds;
+  List<Round>? rounds;
   List<Player>? players;
   int? currentRound;
   String? status;
@@ -36,9 +36,9 @@ class Tournament {
     status = json['status'];
 
     if (json['rounds'] != null) {
-      rounds = <Rounds>[];
+      rounds = <Round>[];
       json['rounds'].forEach((v) {
-        rounds!.add(Rounds.fromJson(v));
+        rounds!.add(Round.fromJson(v));
       });
     }
     if (json['players'] != null) {
@@ -56,6 +56,8 @@ class Tournament {
       'organizer': organizer,
       'time_control': timeControl,
       'rounds_number': roundsNumber,
+      'current_round': currentRound,
+      'status': status,
     };
     if (rounds != null) {
       data['rounds'] = rounds!.map((v) => v.toJson()).toList();

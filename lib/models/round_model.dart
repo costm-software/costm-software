@@ -1,17 +1,19 @@
-import 'package:costm_software/models/matches_model.dart';
+import 'package:costm_software/models/match_model.dart';
 
-class Rounds {
+class Round {
   String? roundId;
-  List<Matches>? matches;
+  List<Match>? matches;
+  String? status;
 
-  Rounds({this.roundId, this.matches});
+  Round({this.roundId, this.matches, this.status});
 
-  Rounds.fromJson(Map<String, dynamic> json) {
+  Round.fromJson(Map<String, dynamic> json) {
     roundId = json['round_id'];
+    status = json['status'];
     if (json['matches'] != null) {
-      matches = <Matches>[];
+      matches = <Match>[];
       json['matches'].forEach((v) {
-        matches!.add(Matches.fromJson(v));
+        matches!.add(Match.fromJson(v));
       });
     }
   }
@@ -19,6 +21,7 @@ class Rounds {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
       'round_id': roundId,
+      'status': status,
     };
     if (matches != null) {
       data['matches'] = matches!.map((v) => v.toJson()).toList();

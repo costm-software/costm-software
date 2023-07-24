@@ -1,14 +1,14 @@
 import 'package:costm_software/models/player_model.dart';
 
-class Matches {
+class Match {
   String? matchId;
   String? matchResult;
   Player? playerOne;
   Player? playerTwo;
 
-  Matches({this.matchId, this.matchResult, this.playerOne, this.playerTwo});
+  Match({this.matchId, this.matchResult, this.playerOne, this.playerTwo});
 
-  Matches.fromJson(Map<String, dynamic> json) {
+  Match.fromJson(Map<String, dynamic> json) {
     matchId = json['match_id'];
     matchResult = json['match_result'];
     playerOne =
